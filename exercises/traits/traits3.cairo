@@ -7,7 +7,8 @@
 
 // Execute `starklings hint traits3` or use the `hint` watch subcommand for a hint.
 
-// I AM NOT DONE
+
+use debug::PrintTrait;
 
 #[derive(Copy, Drop)]
 struct Fish {
@@ -60,15 +61,28 @@ impl AnimalDogImpl of AnimalTrait::<Dog> {
 }
 
 // TODO: implement FishTrait for the type Fish
-
+impl FishImpl of FishTrait {
+    fn swim(ref self:Fish) {
+     let Fish  { noise, mut distance} = self;
+     distance = distance + 1_u32;
+     self = Fish{noise,distance};
+    }
+}
 // TODO: implement DogTrait for the type Dog
-
+impl DogImpl of DogTrait{
+fn walk(ref self:Dog){
+        let Dog{noise, mut distance } = self;
+        distance = distance + 1_u32;
+        self = Dog{noise,distance};
+    }
+}
 #[test]
 fn test_traits3() {
     // Don't modify this test!
     let mut salmon: Fish = AnimalTrait::new();
     salmon.swim();
     assert(salmon.make_noise() == 'blub', 'Wrong noise');
+    salmon.distance.print();
     assert(salmon.get_distance() == 1_u32, 'Wrong distance');
 
     let mut dog: Dog = AnimalTrait::new();
